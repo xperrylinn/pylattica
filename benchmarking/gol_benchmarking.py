@@ -4,7 +4,9 @@ from pylattica.discrete import PhaseSet
 from pylattica.structures.square_grid.grid_setup import DiscreteGridSetup
 from pylattica.logger import logger
 from typing import List, Callable
+import matplotlib.pyplot as plt
 import pandas as pd
+import numpy as np
 import time
 
 # Constants
@@ -64,13 +66,37 @@ if __name__ == "__main__":
     logger.info(f"Benchmarking {simulate_serial.__name__}")
     results = benchmark_simulation(fxn=simulate_serial, sizes=sizes, num_trials=num_trials, num_steps=num_steps)
     logger.info(f"Finished collecting {simulate_serial.__name__} results. Writing to CSV.")
-    df = pd.DataFrame(data=results, columns=["size", "trial", "num_steps", "time (seconds)"])
+    serial_df = pd.DataFrame(data=results, columns=["size", "trial", "num_steps", "time (seconds)"])
     output_file_path = "gol_serial.csv"
-    df.to_csv(path_or_buf=output_file_path, index=False)
+    serial_df.to_csv(path_or_buf=output_file_path, index=False)
 
     logger.info(f"Benchmarking {simulate_parallel.__name__}")
     results = benchmark_simulation(fxn=simulate_parallel, sizes=sizes, num_trials=num_trials, num_steps=num_steps)
     logger.info(f"Finished collecting {simulate_parallel.__name__} results. Writing to CSV.")
-    df = pd.DataFrame(data=results, columns=["size", "trial", "num_steps", "time (seconds)"])
+    parallel_df = pd.DataFrame(data=results, columns=["size", "trial", "num_steps", "time (seconds)"])
     output_file_path = "gol_parallel.csv"
-    df.to_csv(path_or_buf=output_file_path, index=False)
+    parallel_df.to_csv(path_or_buf=output_file_path, index=False)
+
+    logger.info("Data aggregation")
+    serial_df = serial_df.groupby(by=["size", "num_steps"]).agg({"time (seconds)": np.mean})
+    parallel_df = parallel_df.groupby(by=["size", "num_steps"]).agg({"time (seconds)": np.mean})
+
+    logger.info("Plotting")
+    plt.figure(figsize=(10, 6))
+
+    plt.plot(sizes, serial_df["time (seconds)"], label="serial", color='blue', linestyle='-', linewidth=2)
+    plt.plot(sizes, parallel_df["time (seconds)"], label="parallel", color='red', linestyle='--', linewidth=2)
+
+    plt.xlabel("size")
+    plt.ylabel("time (seconds)")
+    plt.title("Original Implementation\nParallel & Serial Run Times")
+
+    plt.legend(loc="upper right")
+
+    output_file = "parallel_serial_original.png"
+    plt.savefig(output_file)
+
+    plt.grid(True)
+ 
+    logger.info(f"Plot saved as '{output_file}'")
+
