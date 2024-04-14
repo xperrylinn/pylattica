@@ -15,7 +15,7 @@ def test_gol_variants():
             variant=variant
         )
         runner = SynchronousRunner(parallel=False)
-        runner.run(simulation.state, controller, 10, verbose=False)
+        runner.run(simulation.state, controller, 10)
 
 def test_gol_update_rule():
     phases = PhaseSet(["dead", "alive"])

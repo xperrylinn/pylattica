@@ -7,12 +7,15 @@ from tqdm import tqdm
 from ..basic_controller import BasicController
 from ..simulation_result import SimulationResult
 from ..simulation_state import SimulationState
-from ..utils import printif
 
 from .base_runner import Runner
 from .common import merge_updates
 
+from ...logger import setup_logger
+
 mp_globals = {}
+
+logger = setup_logger()
 
 
 class SynchronousRunner(Runner):
@@ -45,7 +48,6 @@ class SynchronousRunner(Runner):
         live_state: SimulationState,
         controller: BasicController,
         num_steps: int,
-        verbose: bool = False,
     ):
         if self.parallel:
             global mp_globals  # pylint: disable=global-variable-not-assigned
@@ -57,13 +59,10 @@ class SynchronousRunner(Runner):
             else:
                 PROCESSES = self.workers  # pragma: no cover
 
-            printif(verbose, f"Running in parallel using {PROCESSES} workers")
+            logger.debug(f"Running in parallel using {PROCESSES} workers")
             num_sites = initial_state.size
             chunk_size = math.ceil(num_sites / PROCESSES)
-            printif(
-                verbose,
-                f"Distributing {num_sites} update tasks to {PROCESSES} workers in chunks of {chunk_size}",
-            )
+            logger.debug(f"Distributing {num_sites} update tasks to {PROCESSES} workers in chunks of {chunk_size}")
             with mp.get_context("fork").Pool(PROCESSES) as pool:
                 updates = {}
                 for _ in tqdm(range(num_steps)):
@@ -72,7 +71,7 @@ class SynchronousRunner(Runner):
                     )
                     result.add_step(updates)
         else:
-            printif(verbose, "Running in series.")
+            logger.debug("Running in series.")
             for _ in tqdm(range(num_steps)):
                 updates = self._take_step(live_state, controller)
                 live_state.batch_update(updates)

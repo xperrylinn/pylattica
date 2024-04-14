@@ -13,7 +13,7 @@ def discrete_result():
     controller = GameOfLifeController(structure = simulation.structure,
                                       variant=Life)
     runner = SynchronousRunner(parallel=False)
-    return runner.run(simulation.state, controller, 10, verbose=False)
+    return runner.run(simulation.state, controller, 10)
 
 def test_plot_phase_fractions(discrete_result):
     analyzer = DiscreteResultAnalyzer(discrete_result)
@@ -33,7 +33,7 @@ def test_phase_fraction_at_step():
     controller = GameOfLifeController(structure = simulation.structure,
                                       variant=Life)
     runner = SynchronousRunner(parallel=False)
-    result = runner.run(simulation.state, controller, 10, verbose=False)
+    result = runner.run(simulation.state, controller, 10)
 
     analyzer = DiscreteResultAnalyzer(result)
 

@@ -16,7 +16,7 @@ def test_step_artist():
     controller = GameOfLifeController(structure = simulation.structure,
                                       variant=Life)
     runner = SynchronousRunner(parallel=False)
-    result = runner.run(simulation.state, controller, 10, verbose=False)
+    result = runner.run(simulation.state, controller, 10)
     cell_artist = DiscreteCellArtist.from_discrete_state(result.last_step)
     artist = SquareGridArtist2D(simulation.structure, cell_artist)
     artist.get_img(result.last_step, cell_size=5, label="test img")
@@ -30,7 +30,7 @@ def test_result_artist():
     controller = GameOfLifeController(structure = simulation.structure,
                                       variant=Life)
     runner = SynchronousRunner(parallel=False)
-    result = runner.run(simulation.state, controller, 10, verbose=False)
+    result = runner.run(simulation.state, controller, 10)
     cell_artist = DiscreteCellArtist.from_discrete_result(result)
     step_artist = SquareGridArtist2D(simulation.structure, cell_artist)
     step_artist.get_img(result.last_step, cell_size=5)
@@ -53,7 +53,7 @@ def test_step_artist_3D():
     setup = DiscreteGridSetup(phases, dim=3)
     simulation = setup.setup_noise(3, ["dead", "alive"])
     runner = SynchronousRunner(parallel=False)
-    result = runner.run(simulation.state, SimpleController(), 4, verbose=False)
+    result = runner.run(simulation.state, SimpleController(), 4)
 
     cell_artist = DiscreteCellArtist.from_discrete_state(result.last_step)
     artist = SquareGridArtist3D(simulation.structure, cell_artist)

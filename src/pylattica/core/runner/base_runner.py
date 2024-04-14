@@ -37,7 +37,6 @@ class Runner:
         initial_state: SimulationState,
         controller: BasicController,
         num_steps: int,
-        verbose=False,
     ) -> SimulationResult:
         """Run the simulation for the prescribed number of steps. Recall that one
         asynchronous simulation step involves one application of the update rule,
@@ -51,8 +50,6 @@ class Runner:
             The controller (a descendent of BasicController) which implements the update rule.
         num_steps : int
             The number of steps for which the simulation should run.
-        verbose : bool, optional
-            If True, debug information is printed during the run, by default False
 
         Returns
         -------
@@ -64,7 +61,7 @@ class Runner:
         controller.pre_run(initial_state)
         live_state = initial_state.copy()
 
-        self._run(initial_state, result, live_state, controller, num_steps, verbose)
+        self._run(initial_state, result, live_state, controller, num_steps)
 
         result.set_output(live_state)
         return result

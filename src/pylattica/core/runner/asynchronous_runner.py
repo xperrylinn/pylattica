@@ -34,7 +34,6 @@ class AsynchronousRunner(Runner):
         live_state: SimulationState,
         controller: BasicController,
         num_steps: int,
-        verbose: bool = False,
     ) -> SimulationResult:
         """Run the simulation for the prescribed number of steps. Recall that one
         asynchronous simulation step involves one application of the update rule,
@@ -48,8 +47,6 @@ class AsynchronousRunner(Runner):
             The controller (a descendent of BasicController) which implements the update rule.
         num_steps : int
             The number of steps for which the simulation should run.
-        verbose : bool, optional
-            If True, debug information is printed during the run, by default False
 
         Returns
         -------
@@ -71,7 +68,7 @@ class AsynchronousRunner(Runner):
         if len(site_queue) == 0:
             raise RuntimeError("Controller provided no sites to update, ABORTING")
 
-        for _ in tqdm(range(num_steps), disable=(not verbose)):
+        for _ in tqdm(range(num_steps)):
             site_id = site_queue.popleft()
 
             controller_response = controller.get_state_update(site_id, live_state)
