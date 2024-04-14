@@ -11,11 +11,9 @@ from ..simulation_state import SimulationState
 from .base_runner import Runner
 from .common import merge_updates
 
-from ...logger import setup_logger
+from ...logger import logger
 
 mp_globals = {}
-
-logger = setup_logger()
 
 
 class SynchronousRunner(Runner):

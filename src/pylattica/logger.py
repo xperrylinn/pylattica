@@ -26,3 +26,5 @@ def setup_logger(log_file_path='pylattica.log'):
     logger.addHandler(file_handler)
 
     return logger
+
+logger = setup_logger()
