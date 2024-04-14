@@ -12,8 +12,7 @@ import time
 # Constants
 gol_phases = ["dead", "alive"]
 num_steps = 100
-sizes = [10, 100, 1000]
-sizes = [10]
+sizes = [50, 75, 100]
 num_trials = 3
 
 
@@ -78,14 +77,14 @@ if __name__ == "__main__":
     parallel_df.to_csv(path_or_buf=output_file_path, index=False)
 
     logger.info("Data aggregation")
-    serial_df = serial_df.groupby(by=["size", "num_steps"]).agg({"time (seconds)": np.mean})
-    parallel_df = parallel_df.groupby(by=["size", "num_steps"]).agg({"time (seconds)": np.mean})
+    serial_df = serial_df.groupby(by=["size"]).agg({"time (seconds)": np.mean})
+    parallel_df = parallel_df.groupby(by=["size"]).agg({"time (seconds)": np.mean})
 
     logger.info("Plotting")
     plt.figure(figsize=(10, 6))
 
-    plt.plot(sizes, serial_df["time (seconds)"], label="serial", color='blue', linestyle='-', linewidth=2)
-    plt.plot(sizes, parallel_df["time (seconds)"], label="parallel", color='red', linestyle='--', linewidth=2)
+    plt.scatter(sizes, serial_df["time (seconds)"], label="serial", color='blue', linestyle='-', marker='o', linewidth=2)
+    plt.scatter(sizes, parallel_df["time (seconds)"], label="parallel", color='red', linestyle='-', marker='^', linewidth=2)
 
     plt.xlabel("size")
     plt.ylabel("time (seconds)")
@@ -94,9 +93,9 @@ if __name__ == "__main__":
     plt.legend(loc="upper right")
 
     output_file = "parallel_serial_original.png"
-    plt.savefig(output_file)
 
     plt.grid(True)
- 
+    plt.savefig(output_file)
+
     logger.info(f"Plot saved as '{output_file}'")
 
