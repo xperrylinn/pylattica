@@ -59,9 +59,18 @@ def benchmark_simulation(fxn: Callable[[int, int], None], sizes: List[int], num_
 
 
 if __name__ == "__main__":
-    logger.info(f"Benchmarking simulation with sizes {sizes} runs for {num_trials} each\n")
+    logger.info(f"Benchmarking simulation with sizes {sizes} runs for {num_trials} and num_steps {num_steps} each")
+
+    logger.info(f"Benchmarking {simulate_serial.__name__}")
     results = benchmark_simulation(fxn=simulate_serial, sizes=sizes, num_trials=num_trials, num_steps=num_steps)
-    logger.info("Finished collecting results. Writing to CSV.")
+    logger.info(f"Finished collecting {simulate_serial.__name__} results. Writing to CSV.")
     df = pd.DataFrame(data=results, columns=["size", "trial", "num_steps", "time (seconds)"])
     output_file_path = "gol_serial.csv"
+    df.to_csv(path_or_buf=output_file_path, index=False)
+
+    logger.info(f"Benchmarking {simulate_parallel.__name__}")
+    results = benchmark_simulation(fxn=simulate_parallel, sizes=sizes, num_trials=num_trials, num_steps=num_steps)
+    logger.info(f"Finished collecting {simulate_parallel.__name__} results. Writing to CSV.")
+    df = pd.DataFrame(data=results, columns=["size", "trial", "num_steps", "time (seconds)"])
+    output_file_path = "gol_parallel.csv"
     df.to_csv(path_or_buf=output_file_path, index=False)
