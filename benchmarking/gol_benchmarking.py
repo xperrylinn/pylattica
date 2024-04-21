@@ -12,7 +12,7 @@ import time
 # Constants
 gol_phases = ["dead", "alive"]
 num_steps = 100
-sizes = [50, 75, 100]
+sizes = [50, 75, 100, 1000]
 num_trials = 3
 
 
@@ -36,7 +36,7 @@ def simulate_parallel(size: List[int], num_steps: int):
         phases=gol_phases
     )
     controller = GameOfLifeController(starting_state.structure, Life)
-    runner = SynchronousRunner(parallel=False)
+    runner = SynchronousRunner(parallel=True)
     runner.run(starting_state.state, controller, num_steps=num_steps)
 
 
