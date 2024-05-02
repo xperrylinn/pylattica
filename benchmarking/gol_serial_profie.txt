@@ -3427,7 +3427,6 @@
         1    0.000    0.000    0.000    0.000 visit.py:22(BFSVisitor)
         1    0.000    0.000    0.000    0.000 visit.py:71(DFSVisitor)
         3    0.000    0.000    0.000    0.000 warnings.py:130(filterwarnings)
-        6    0.000    0.000    0.000    0.000 warnings.py:165(simplefilter)
         9    0.000    0.000    0.000    0.000 warnings.py:181(_add_filter)
        32    0.000    0.000    0.000    0.000 warnings.py:437(__init__)
        32    0.000    0.000    0.000    0.000 warnings.py:458(__enter__)

@@ -8,7 +8,7 @@ def setup_logger(log_file_path='pylattica.log'):
 
     # Create console handler and set level to INFO
     console_handler = logging.StreamHandler()
-    console_handler.setLevel(logging.INFO)
+    console_handler.setLevel(logging.DEBUG)
 
     # Create file handler and set level to DEBUG
     file_handler = logging.FileHandler(log_file_path)

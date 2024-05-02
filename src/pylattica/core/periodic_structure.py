@@ -29,7 +29,7 @@ class PeriodicStructure:
 
     @classmethod
     def build_from(
-        _,
+        cls,
         lattice: Lattice,
         num_cells: List[int],
         site_motif: Union[Dict, List],

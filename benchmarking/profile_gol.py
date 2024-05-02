@@ -7,7 +7,7 @@ from pylattica.structures.square_grid.grid_setup import DiscreteGridSetup
 phases = PhaseSet(["dead", "alive"])
 setup = DiscreteGridSetup(phases)
 starting_state = setup.setup_noise(
-    size=100,
+    size=4,
     phases=["dead", "alive"]
 )
 controller = GameOfLifeController(starting_state.structure, Life)
